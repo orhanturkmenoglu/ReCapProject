@@ -16,8 +16,26 @@ namespace ConsoleUI
             // Add(carManager);
             // Delete(carManager);
             // Update(carManager);
+            // ModelYears(carManager);
+            // DailPrice(carManager);
 
             Console.ReadLine();
+        }
+
+        private static void DailPrice(CarManager carManager)
+        {
+            foreach (var item in carManager.GetDailPrice(250))
+            {
+                Console.WriteLine(item.Description);
+            }
+        }
+
+        private static void ModelYears(CarManager carManager)
+        {
+            foreach (var item in carManager.GetModelYears(1998))
+            {
+                Console.WriteLine(item.Description);
+            }
         }
 
         private static void Update(CarManager carManager)

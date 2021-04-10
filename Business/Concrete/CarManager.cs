@@ -36,6 +36,22 @@ namespace Business.Concrete
             return _carDal.GetById(id);
         }
 
+        public List<Car> GetDailPrice(int dailPrice)
+        {
+            if (dailPrice<=250)
+            {
+             return _carDal.GetDailPrice(dailPrice);
+            }
+
+            return null;
+
+        }
+
+        public List<Car> GetModelYears(int model)
+        {
+            return _carDal.GetModelYears(model);
+        }
+
         public void Update(Car car)
         {
             _carDal.Update(car);
