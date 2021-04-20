@@ -1,4 +1,5 @@
 ﻿using Business.Concrete;
+using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
@@ -9,7 +10,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
+            CarManager carManager = new CarManager(new EfCarDal());
 
             // GetAll(carManager);
             // GetById(carManager);
@@ -19,22 +20,56 @@ namespace ConsoleUI
             // ModelYears(carManager);
             // DailPrice(carManager);
 
+            //foreach (var car in carManager.GetAll())
+            //{
+            //    Console.WriteLine(car.Descriptions);
+            //}
+
+            // CarAddTest(carManager);
+
+           // CarDetailsTest(carManager);
+
             Console.ReadLine();
+        }
+
+        private static void CarDetailsTest(CarManager carManager)
+        {
+            foreach (var item in carManager.GetCarDetails())
+            {
+
+                Console.WriteLine("CarName {0} : BrandName {1} : ColorName {2} : DailyPrice {3} :", item.CarName, item.BrandName, item.ColorName, item.DailyPrice);
+
+            }
+        }
+
+        private static void CarAddTest(CarManager carManager)
+        {
+            Car car1 = new Car()
+            {
+                CarID = 18,
+                BrandID = 1,
+                ColorID = 1,
+                DailyPrice = -10,
+                Descriptions = "Pe",
+                ModelYear = "1999"
+            };
+
+            carManager.Add(car1);
         }
 
         private static void DailPrice(CarManager carManager)
         {
             foreach (var item in carManager.GetDailPrice(250))
             {
-                Console.WriteLine(item.Description);
+                Console.WriteLine(item.Descriptions);
             }
         }
 
         private static void ModelYears(CarManager carManager)
         {
-            foreach (var item in carManager.GetModelYears(1998))
+            foreach (var item in carManager.GetModelYears("1998"))
             {
-                Console.WriteLine(item.Description);
+                Console.WriteLine(item.Descriptions);
             }
         }
 
@@ -42,26 +77,29 @@ namespace ConsoleUI
         {
             Car car6 = new Car()
             {
-                Id = 6,
-                BrandId = 4,
-                ColorId = 1,
+                CarID = 6,
+                BrandID = 4,
+                ColorID = 1,
                 DailyPrice = 50,
-                ModelYear = 2000,
-                Description = "Doğan görünümlü şahin"
+                ModelYear = "2000",
+                Descriptions = "Doğan görünümlü şahin"
             };
+
             carManager.Update(car6);
+
+
         }
 
         private static void Delete(CarManager carManager)
         {
             Car car6 = new Car()
             {
-                Id = 6,
-                BrandId = 4,
-                ColorId = 1,
+                CarID = 6,
+                BrandID = 4,
+                ColorID = 1,
                 DailyPrice = 50,
-                ModelYear = 2000,
-                Description = "Doğan görünümlü şahin"
+                ModelYear = "2000",
+                Descriptions = "Doğan görünümlü şahin"
             };
 
             carManager.Delete(car6);
@@ -71,28 +109,28 @@ namespace ConsoleUI
         {
             foreach (var item in carManager.GetAll())
             {
-                Console.WriteLine(item.Description);
+                Console.WriteLine(item.Descriptions);
             }
         }
 
         private static void GetById(CarManager carManager)
         {
-            foreach (var item in carManager.GetById(1))
-            {
-                Console.WriteLine(item.Description);
-            }
+            //foreach (var item in carManager.GetById(1))
+            //{
+            //    Console.WriteLine(item.Descriptions);
+            //}
         }
 
         private static void Add(CarManager carManager)
         {
             Car car6 = new Car()
             {
-                Id = 6,
-                BrandId = 4,
-                ColorId = 1,
+                CarID = 6,
+                BrandID = 4,
+                ColorID = 1,
                 DailyPrice = 50,
-                ModelYear = 2000,
-                Description = "Doğan görünümlü şahin"
+                ModelYear = "2000",
+                Descriptions = "Doğan görünümlü şahin"
             };
 
             carManager.Add(car6);
