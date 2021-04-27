@@ -12,6 +12,21 @@ namespace ConsoleUI
         {
             CarManager carManager = new CarManager(new EfCarDal());
 
+            var result = carManager.GetAll();
+            if (result.Success)
+            {
+                foreach (var item in result.Data)
+                {
+                    Console.WriteLine(item.Descriptions);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+
+
+
             // GetAll(carManager);
             // GetById(carManager);
             // Add(carManager);
@@ -34,7 +49,7 @@ namespace ConsoleUI
 
         private static void CarDetailsTest(CarManager carManager)
         {
-            foreach (var item in carManager.GetCarDetails())
+            foreach (var item in carManager.GetCarDetails().Data)
             {
 
                 Console.WriteLine("CarName {0} : BrandName {1} : ColorName {2} : DailyPrice {3} :", item.CarName, item.BrandName, item.ColorName, item.DailyPrice);
@@ -59,7 +74,7 @@ namespace ConsoleUI
 
         private static void DailPrice(CarManager carManager)
         {
-            foreach (var item in carManager.GetDailPrice(250))
+            foreach (var item in carManager.GetDailPrice(250).Data)
             {
                 Console.WriteLine(item.Descriptions);
             }
@@ -67,7 +82,7 @@ namespace ConsoleUI
 
         private static void ModelYears(CarManager carManager)
         {
-            foreach (var item in carManager.GetModelYears("1998"))
+            foreach (var item in carManager.GetModelYears("1998").Data)
             {
                 Console.WriteLine(item.Descriptions);
             }
@@ -107,7 +122,7 @@ namespace ConsoleUI
 
         private static void GetAll(CarManager carManager)
         {
-            foreach (var item in carManager.GetAll())
+            foreach (var item in carManager.GetAll().Data)
             {
                 Console.WriteLine(item.Descriptions);
             }

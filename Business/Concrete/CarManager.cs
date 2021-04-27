@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Abstract;
+using Core.Utilities.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -17,65 +20,76 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
-            if (!(car.Descriptions.Length>=2))
+            if (!(car.Descriptions.Length >= 2))
             {
-                Console.WriteLine("Araba ismi minimum iki karakter olmalıdır!!");
+                return new ErrorResult(Messages.CarNameInvalid);
             }
 
-            if (!(car.DailyPrice>0))
+            if (!(car.DailyPrice > 0))
             {
-                Console.WriteLine("Araba günlük fiyat 0 dan büyük  olmalıdır!!");
+                return new ErrorResult(Messages.CarDailyPriceInvalid);
             }
 
             _carDal.Add(car);
 
+            return new SuccessResult(Messages.CarAdded);
+
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new SuccessResult(Messages.CarDeleted);
         }
-
-        public List<Car> GetAll()
-        {
-            return _carDal.GetAll();
-        }
-        public void GetById(int id)
-        {
-             _carDal.Get(c => c.CarID == id);
-        }
-
-        public List<CarDetailDto> GetCarDetails()
-        {
-            return _carDal.GetCarDetails();
-        }
-
-        public List<Car> GetCarsByBrandId(int brandId)
-        {
-            return _carDal.GetAll(c => c.BrandID == brandId);
-        }
-
-        public List<Car> GetCarsByColorId(int colorId)
-        {
-            return _carDal.GetAll(c => c.ColorID == colorId);
-        }
-
-        public List<Car> GetDailPrice(int dailPrice)
-        {
-
-            return _carDal.GetAll(c => c.DailyPrice == dailPrice);
-        }
-
-        public List<Car> GetModelYears(string model)
-        {
-            return _carDal.GetAll(c => c.ModelYear == model);
-        }
-
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new SuccessResult(Messages.CarUpdated);
+
         }
+
+        public IDataResult<List<Car>> GetAll()
+        {
+            if (DateTime.Now.Hour==20)
+            {
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            }
+
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+        }
+        public IDataResult<List<Car>> GetById(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.CarID == id));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
+        {
+            return new SuccessDataResult<List<CarDetailDto>> (_carDal.GetCarDetails());
+        }
+
+        public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandID == brandId));
+        }
+
+        public IDataResult<List<Car>> GetCarsByColorId(int colorId)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorID == colorId), true);
+        }
+
+        public IDataResult<List<Car>> GetDailPrice(int dailPrice)
+        {
+
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.DailyPrice == dailPrice), Messages.CarDailyPriceListed);
+        }
+
+        public IDataResult<List<Car>> GetModelYears(string model)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ModelYear == model));
+        }
+
+
     }
 }
