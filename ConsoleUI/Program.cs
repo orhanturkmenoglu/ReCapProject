@@ -12,20 +12,33 @@ namespace ConsoleUI
         {
             CarManager carManager = new CarManager(new EfCarDal());
 
-            var result = carManager.GetAll();
-            if (result.Success)
-            {
-                foreach (var item in result.Data)
-                {
-                    Console.WriteLine(item.Descriptions);
-                }
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
-            }
+            //var result = carManager.GetAll();
+            //if (result.Success)
+            //{
+            //    foreach (var item in result.Data)
+            //    {
+            //        Console.WriteLine(item.Descriptions);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
+
+            Customer customer1 = new Customer() { UserId = 1, CompanyName = "Kampanya 1" };
+
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
 
 
+            //var result = customerManager.Add(customer1);
+            //if (result.Success)
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("İşlem başarısız");
+            //}
 
             // GetAll(carManager);
             // GetById(carManager);
@@ -42,7 +55,33 @@ namespace ConsoleUI
 
             // CarAddTest(carManager);
 
-           // CarDetailsTest(carManager);
+            // CarDetailsTest(carManager);
+
+            Rental rental = new Rental() { CarId = 1, CustomerId = 11, RentDate = DateTime.Now };
+
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+            //var result = rentalManager.Add(rental);
+            //if (result.Success)
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
+
+
+            var result = rentalManager.GetRentalDetailDto();
+            if (result.Success)
+            {
+                foreach (var item in result.Data)
+                {
+                    Console.WriteLine("FirstName : {0} LastName: {1} CarName: {2} CompanyName: {3} BrandName: {4} ModelYear: {5} DailyPrice: {6} RentDate: {7} " +
+                        "ReturnDate: {8}", item.FirstName, item.LastName, item.CarName, item.CompanyName, item.BrandName, item.ModelYear, item.DailyPrice, item.RentDate, item.ReturnDate);
+                }
+            }
 
             Console.ReadLine();
         }
