@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Abstract;
 using Core.Utilities.Concrete;
 using DataAccess.Abstract;
@@ -23,14 +25,18 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            var result = _rentalDal.GetAll(r => r.CarId == rental.CarId && r.ReturnDate == null);
 
-            if (!result.Any())
-            {
-                _rentalDal.Add(rental);
-                return new SuccessResult(Messages.RentalAdded);
+            ValidationTool.Validate(new RentalValidator(),rental);
 
-            }
+            //var result = _rentalDal.GetAll(r => r.CarId == rental.CarId && r.ReturnDate == null);
+
+            //if (!result.Any())
+            //{
+            //    _rentalDal.Add(rental);
+            //    return new SuccessResult(Messages.RentalAdded);
+
+            //}
+
 
             return new ErrorResult(Messages.ReturnDateIsEmpty);
 
